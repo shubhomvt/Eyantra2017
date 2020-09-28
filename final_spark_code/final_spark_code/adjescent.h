@@ -5,7 +5,8 @@
  *  Author: Swathi S
  */
 
-//////RED
+///blue
+
 //#include <avr/io.h>
 #include <stdio.h>
 #include <stdio.h>
@@ -17,9 +18,9 @@
 //#define X 49
 //#define Y 7
 
-unsigned char start=22;/////////////////red changed
-unsigned char des=6;
-unsigned char dir=2; 
+unsigned char start=6;
+unsigned char des=46;
+unsigned char dir=3; ///green home
  unsigned char g=0;
  unsigned char max =0;
 

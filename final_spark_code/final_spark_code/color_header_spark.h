@@ -205,11 +205,11 @@ void color_sensor_work()
 		
 	}
 	else
-	{	//red greatest
-		PORTC=PORTC|(1<<PC4);
-		PORTC=PORTC & 0x9F; //clear pc5 and pc6 1001 1111
-		task=1;
+	{	//blue
+		PORTC=PORTC|(1<<PC6);
+		PORTC=PORTC & 0xCF; //clear pc5 and pc4 1100 1111
+		task=3;
 		_delay_ms(500);
 	}	
-	//PORTC=PORTC& 0x8F;//1000 1111
+	
 }

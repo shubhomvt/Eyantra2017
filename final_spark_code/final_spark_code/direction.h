@@ -1,15 +1,15 @@
-
+//blue
 
 void array_init()
 {
 	for(int i=0;i<=10;i++)
 	{
-		blue_nodes[i]=0;
+		red_nodes[i]=0;
 		green_nodes[i]=0;
 	}
 	for(int i=0;i<=20;i++)
 	{
-		blue_side[i]=0;
+		red_side[i]=0;
 		green_side[i]=0;
 	}
 }
@@ -17,6 +17,22 @@ void do_task()
 {	
 	if(task==1)//red
 	{	
+		red_nodes[r]=path1.path[t];
+		red_side[rs]=side;
+		r++;
+		rs++;
+		
+	}
+	else if(task==2)//green
+	{
+		green_nodes[gn]=path1.path[t];
+		green_side[gs]=side;
+		gn++;
+		gs++;
+		
+	}
+	if(task==3)
+	{
 		for(int i=0;i<=150;i++)   //back
 		{
 			PORTB=PORTB|0x20;//0010 0000 pb5
@@ -36,22 +52,6 @@ void do_task()
 			
 		}
 		
-		
-	}
-	else if(task==2)//green
-	{
-		green_nodes[gn]=path1.path[t];
-		green_side[gs]=side;
-		gn++;
-		gs++;
-		
-	}
-	if(task==3)
-	{
-		blue_nodes[b]=path1.path[t];
-		blue_side[bs]=side;
-		b++;
-		bs++;
 	}		
 	 
 	//buzzer_beep();
@@ -85,58 +85,96 @@ void do_task()
 	}*/
 	task=0;
 	side=0;
-	PORTC=PORTC& 0x8F;
+	PORTC=PORTC& 0x8F;//1000 1111
 	//buzzer_beep();
 }
 
 void direction(void)
 {	init_devices_buzzer();
+	
 	int w=0;
 	if(t==max)
 	{	if(stage==1)
-		{	
-			if(dir==1)
+		{	buzzer_beep();
+			if(dir==3)
 			{	//buzzer_beep();
 				right_degrees(190);
 				stop_pos();
 				_delay_ms(500);
 			}
-			else if(dir==2)
+			else if(dir==4)
 			{
 				right_degrees(100);
 				stop_pos();
 				_delay_ms(500);
 			}
-			else if(dir==4)
+			else if(dir==2)
 			{
 				left_degrees(100);
 				stop_pos();
 				_delay_ms(500);
 			}
 			
-			dir=3;
-		//	lcd_print(2,4,dir,3);
-			back_mm(100);
-			stop_pos();
-			_delay_ms(500);
+			dir=1;
+		back_mm(100);
+		stop_pos();
+		_delay_ms(500);
 			g=1;
-			buzzer_beep();
 		}
 		else if(stage==2)
 
 		{	
 			
-			
+			init_devices_zigbee();
 			_delay_ms(100);
 			while (1)
 			{
-				if(next>1)
+				if(next>3)
 				{
 					break;
 					
 				}
 			}
 			
+			red_nodes[0]=51;
+			red_nodes[r]=52;
+			red_side[0]=51;
+			red_side[rs]=52;
+			for(int i=0;i<=10;i++)
+			{	if(red_nodes[i]==0)
+				{
+					
+					break;
+					
+				}
+				USARTWriteChar(red_nodes[i]);
+				_delay_ms(100);
+				/*if(red_nodes[i]==52)
+				{
+					
+					break;
+					
+				}*/
+				
+				
+			}
+			
+			buzzer_on();
+			_delay_ms(1000);
+			buzzer_off();
+			for(int i=0;i<10;i++)
+			{	if(red_side[i]==0)
+				{
+					break;
+				}
+				USARTWriteChar(red_side[i]);
+				_delay_ms(100);
+				
+			}
+			
+			buzzer_on();
+			_delay_ms(1000);
+			buzzer_off();
 			green_nodes[0]=55;
 			green_nodes[gn]=56;
 			green_side[0]=55;
@@ -169,48 +207,7 @@ void direction(void)
 			buzzer_on();
 			_delay_ms(1000);
 			buzzer_off();
-			blue_nodes[0]=53;
-			blue_nodes[b]=54;
-			blue_side[0]=53;
-			blue_side[bs]=54;
-			for(int i=0;i<=10;i++)
-			{	if(blue_nodes[i]==0)
-				{
-					
-					break;
-					
-				}
-				USARTWriteChar(blue_nodes[i]+7);
-				
-				_delay_ms(1000);
-				//buzzer_beep();
-				
-			}
-			buzzer_on();
-			_delay_ms(1000);
-			buzzer_off();
-			for(int i=0;i<10;i++)
-			{	if(blue_side[i]==0)
-				{
-					break;
-				}
-				if(blue_side[i]==100)
-				{
-					USARTWriteChar(101);
-					_delay_ms(1000);
-				}
-				else if(blue_side[i]==101)
-				{
-					USARTWriteChar(100);
-					_delay_ms(1000);
-				}
-				
-				//buzzer_beep();
-			}
-			buzzer_on();
-			_delay_ms(1000);
-			buzzer_off();
-			while (1)
+			/*while (1)
 			{
 				if(next>3)
 				{	buzzer_beep();
@@ -218,23 +215,18 @@ void direction(void)
 					break;
 				}
 				
-			}
+			}*/
 			
 			g=1;
-		/*	buzzer_beep();
-			buzzer_beep();
-			/*buzzer_on();
+			buzzer_on();
 			_delay_ms(1000);
-			buzzer_off();*/
+			buzzer_off();
 			
 			
 		}
 		else if(stage==3)
 		{
 			g=1;
-			/*buzzer_beep();
-			buzzer_beep();
-			buzzer_beep();*/
 		
 		}		
 		else if(stage==4)
@@ -331,23 +323,23 @@ void success(int x)
 	buzzer_off();
 	
 	switch (x)
-	{
+	{	
 		case 1:
-		velocity(VELOCITY_MAX,VELOCITY_MAX+q);      // Run robot at max velocity
+		velocity(VELOCITY_MAX,VELOCITY_MAX);      // Run robot at max velocity
 		forward();
-		_delay_ms(300);
+		_delay_ms(100);
 		break;
 		case 2:
-		velocity(VELOCITY_MAX,VELOCITY_MIN+q);      // Run robot left wheel at max velocity and right wheel
+		velocity(VELOCITY_MAX,VELOCITY_MIN);      // Run robot left wheel at max velocity and right wheel
 		right();
 		_delay_ms(900);
 		
 		break;
 		case 3:
-		velocity(VELOCITY_MIN,VELOCITY_MAX+q);      // Run robot right wheel at max velocity and left wheel
+		velocity(VELOCITY_MIN,VELOCITY_MAX);      // Run robot right wheel at max velocity and left wheel
 		left();
 		_delay_ms(900);
-		break;
+		 break;
 		
 	}
 	
@@ -360,31 +352,31 @@ void success(int x)
 
 		
 
-		//		print_sensor(1,1,3);	//Prints value of White Line Sensor1
+//		print_sensor(1,1,3);	//Prints value of White Line Sensor1
 		//print_sensor(1,5,2);	//Prints Value of White Line Sensor2
-		//	print_sensor(1,9,1);	//Prints Value of White Line Sensor3
+	//	print_sensor(1,9,1);	//Prints Value of White Line Sensor3
 
-		if(Center_white_line<THRESHOLD && Left_white_line<THRESHOLD && Right_white_line<THRESHOLD)
+		if(Center_white_line<0x19 && Left_white_line<0x19 && Right_white_line<0x19)
 		{	buzzer_on();
 			_delay_ms(500);
 			buzzer_off();
 			switch (x)
 			{
 				case 1:
-				velocity(VELOCITY_MAX,VELOCITY_MAX+q);      // Run robot at max velocity
+				velocity(VELOCITY_MAX,VELOCITY_MAX);      // Run robot at max velocity
 				forward();
-				_delay_ms(200);
+				_delay_ms(100);
 				break;
 				case 2:
-				velocity(VELOCITY_MAX,VELOCITY_MIN+q);      // Run robot left wheel at max velocity and right wheel
+				velocity(VELOCITY_MAX,VELOCITY_MIN);      // Run robot left wheel at max velocity and right wheel
 				right();
-				_delay_ms(500);
+				_delay_ms(90);
 				
 				break;
 				case 3:
-				velocity(VELOCITY_MIN,VELOCITY_MAX+q);      // Run robot right wheel at max velocity and left wheel
+				velocity(VELOCITY_MIN,VELOCITY_MAX);      // Run robot right wheel at max velocity and left wheel
 				left();
-				_delay_ms(500);
+				_delay_ms(90);
 				break;
 				
 			}
@@ -396,7 +388,7 @@ void success(int x)
 		else if((Left_white_line>THRESHOLD)) //&& (flag==0))
 		{
 			//flag=1;
-			velocity(VELOCITY_MIN,VELOCITY_MAX+q);      // Run robot right wheel at max velocity and left wheel
+			velocity(VELOCITY_MIN,VELOCITY_MAX);      // Run robot right wheel at max velocity and left wheel
 			left();
 			_delay_ms(300);
 			break;
@@ -406,7 +398,7 @@ void success(int x)
 		{
 			//	flag=1;
 			
-			velocity(VELOCITY_MAX,VELOCITY_MIN +q);      // Run robot left wheel at max velocity and right wheel
+			velocity(VELOCITY_MAX,VELOCITY_MIN );      // Run robot left wheel at max velocity and right wheel
 			right();
 			_delay_ms(300);
 			break;
@@ -414,11 +406,12 @@ void success(int x)
 		else if(Center_white_line>THRESHOLD)
 		{
 			//flag=1;
-			velocity(VELOCITY_MAX,VELOCITY_MAX+q);      // Run robot at max velocity
+			velocity(VELOCITY_MAX,VELOCITY_MAX);      // Run robot at max velocity
 			forward();
 			_delay_ms(300);
 			break;
 		}
+		
 		
 		
 

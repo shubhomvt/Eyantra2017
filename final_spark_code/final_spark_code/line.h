@@ -121,34 +121,31 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+/////////////////////////////////////////////////////////////////////////////////////////blue
 
-///RED
-#define		THRESHOLD		20 ///    // set the pots such that all three sensor 
+#define		THRESHOLD		20    // set the pots such that all three sensor 
  //#define      THRESHOLDL	11                                // calibrated to show its min value on LCD.                                       // i.e on LCD Sensor values are betwn 0 To 2									  // on white line  
 #define		VELOCITY_MAX	60  
 #define		VELOCITY_MIN	20
 #define 	VELOCITY_LOW	0
-#define q 5//red 
 unsigned char l=0;
 unsigned char t=0;
 
 unsigned char stage=1;
 unsigned char task=0;
 unsigned char side=0;
-unsigned char b=1;
+unsigned char r=1;
 
-unsigned char bs=1;
+unsigned char rs=1;
 
-unsigned char gn=1;////////red
-
+unsigned char gn=1;////////blue bot
 unsigned char gs=1;
 volatile char red_nodes[12],blue_nodes[12],red_side[20],blue_side[20],green_nodes[12],green_side[12];
 volatile unsigned char data[21]; //to store received data from UDR1
 volatile unsigned char mark=2;
-volatile unsigned char r=0;//red bot
-volatile unsigned char rs=0;
+volatile unsigned char b=0;//blue bot
+volatile unsigned char bs=0;
 volatile unsigned char next=0;
-
 
 unsigned char ADC_Conversion(unsigned char);
 unsigned char ADC_Value;
@@ -178,8 +175,8 @@ void servo100()
 		
 		if(Center_ultrasonic_Sensor>200 )
 		{
-			//servo_1(i);
-			_delay_ms(500);
+			/*servo_1(i);
+			_delay_ms(1000);*/
 			//buzzer_beep();
 			side=100;
 			color_sensor_work();
@@ -195,6 +192,7 @@ void servo100()
 		}
 		
 	}
+	_delay_ms(500);
 	servo_1(95);
 	_delay_ms(500);
 	
@@ -221,7 +219,7 @@ void servo101()
 		
 		if(Center_ultrasonic_Sensor>200 )
 		{	//servo_1_free();
-			_delay_ms(500);
+			//_delay_ms(1000);
 			//buzzer_beep();
 			side=101;
 			color_sensor_work();
@@ -234,6 +232,7 @@ void servo101()
 		}
 		
 	}
+	_delay_ms(500);
 	servo_1(95);
 	_delay_ms(100);
 }
@@ -396,7 +395,7 @@ int line_follower(void)
 
  
 
- velocity(VELOCITY_MAX,VELOCITY_MAX+q);    // Set the speed to max velocity
+ velocity(VELOCITY_MAX,VELOCITY_MAX);    // Set the speed to max velocity
  
  //forward();                              // start to move froward
 
@@ -414,7 +413,7 @@ int line_follower(void)
 	if(Center_white_line<THRESHOLD && Left_white_line<THRESHOLD && Right_white_line<THRESHOLD)               // Is middle Whiteline is within threshold limit
 	{                                             
 		//flag=1;                                                                                                  //c0,l0,r0  
-		velocity(VELOCITY_MIN+2,VELOCITY_MIN+q+2);      // Run robot at max velocity 
+		velocity(VELOCITY_MIN,VELOCITY_MIN);      // Run robot at max velocity 
 		//back();
 		forward();
 		
@@ -423,7 +422,7 @@ int line_follower(void)
 	else if(Center_white_line>THRESHOLD && Left_white_line<THRESHOLD && Right_white_line<THRESHOLD)               // Is middle Whiteline is within threshold limit
 	{
 		//flag=1;                                                                                                 //c1,l0,r0
-		velocity(VELOCITY_MAX,VELOCITY_MAX+q);      // Run robot at max velocity
+		velocity(VELOCITY_MAX,VELOCITY_MAX);      // Run robot at max velocity
 		forward();
 		
 	}
@@ -433,7 +432,7 @@ int line_follower(void)
 	else if(Center_white_line<THRESHOLD && Left_white_line<THRESHOLD && Right_white_line>THRESHOLD)  // Is left Whiteline is not within threshold limit
 	{                                             
 	    //	flag=1;                                                                                                     //c0,l0,r1
-		velocity(VELOCITY_MAX,VELOCITY_MIN+q);      // Run robot left wheel at max velocity and right wheel 
+		velocity(VELOCITY_MAX,VELOCITY_MIN);      // Run robot left wheel at max velocity and right wheel 
 		right();
 		
 	}
@@ -441,7 +440,7 @@ int line_follower(void)
 	else if(Center_white_line>THRESHOLD && Left_white_line<THRESHOLD && Right_white_line>THRESHOLD)  // Is left Whiteline is not within threshold limit
 	{                                                                                                                  //c1,l0,r1                 
 		//	flag=1;
-		velocity(VELOCITY_MAX,VELOCITY_MIN+q);      // Run robot left wheel at max velocity and right wheel
+		velocity(VELOCITY_MAX,VELOCITY_MIN);      // Run robot left wheel at max velocity and right wheel
 		S_R();
 		
 	}
@@ -450,14 +449,14 @@ int line_follower(void)
 	else if(Center_white_line<THRESHOLD && Left_white_line>THRESHOLD && Right_white_line<THRESHOLD ) // Is right Whiteline is not within threshold limit
 	{
 		//flag=1;                                                                                                 //c0,l1,r0
-		velocity(VELOCITY_MIN,VELOCITY_MAX+q);      // Run robot right wheel at max velocity and left wheel 
+		velocity(VELOCITY_MIN,VELOCITY_MAX);      // Run robot right wheel at max velocity and left wheel 
 		s_L();
 		
 	}
 	else if(Center_white_line>THRESHOLD && Left_white_line>THRESHOLD && Right_white_line<THRESHOLD ) // Is right Whiteline is not within threshold limit
 	{                                                                                                             //c1,l1,r0
 		//flag=1; 
-		velocity(VELOCITY_MIN,VELOCITY_MAX+q);      // Run robot right wheel at max velocity and left wheel
+		velocity(VELOCITY_MIN,VELOCITY_MAX);      // Run robot right wheel at max velocity and left wheel
 		left();
 		
 	}
@@ -465,55 +464,44 @@ int line_follower(void)
 	else if(Center_white_line>THRESHOLD && Left_white_line>THRESHOLD && Right_white_line>THRESHOLD)
 	                                // if all Whiteline sensor are not within threshold limit                      //c1,l1,r1   
 	{                       
-		//buzzer_beep();
-		
-		//stop_pos();
-		velocity(VELOCITY_LOW,VELOCITY_LOW);
+		//flag=1;
+		velocity(VELOCITY_LOW,VELOCITY_LOW);      // stop the robot
 		hard_stop();
-		//	lcd_print(2,1,path1.path[l],3);
-		//l++;
-		
 		if(stage==2)
 		{
 			servo100();
 			servo101();
-			//1000 1111
+			
 		}
 		
 		if(stage==3)
 		{	unsigned char count=0;
 			unsigned char i;
-			if(path1.path[t]==46 )
+			if(path1.path[t]==2 )
 			{
 				init_devices_pos();
-				right_degrees(100);
+				left_degrees(100);
+				stop_pos();
+				_delay_ms(500);
+				dir=3;
+				
+			}
+			else if(path1.path[t]==48 )
+			{
+				init_devices_pos();
+				left_degrees(100);
 				stop_pos();
 				_delay_ms(500);
 				dir=1;
 				
 			}
-			else if(path1.path[t]==2 )
-			{
-				
-				init_devices_pos();
-				
-				if(des!=8)
-				{
-					left_degrees(100);
-					stop_pos();
-					_delay_ms(500);
-					dir=3;
-				}
-				
-				
-			}
 			
-			for ( i=0;i<r;i++)
+			for ( i=0;i<b;i++)
 			{
 				
-				if(path1.path[t]==red_nodes[i])
+				if(path1.path[t]==blue_nodes[i])
 				{
-					if (path1.path[t]==red_nodes[i+1])
+					if (path1.path[t]==blue_nodes[i+1])
 					{
 						count++;
 					}
@@ -528,11 +516,11 @@ int line_follower(void)
 			}
 			if(count==1)
 			{
-				if(red_side[i]==100)
+				if(blue_side[i]==100)
 				{
 					servo100();
 				}
-				else if(red_side[i]==101)
+				else if(blue_side[i]==101)
 				{
 					servo101();
 				}

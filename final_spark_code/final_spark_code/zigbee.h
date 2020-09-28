@@ -157,26 +157,26 @@ unsigned char conversion(unsigned char hex)
 		node=44;
 		break;
 		
-		case 0x04:
-		node=4;
+		case 0x30:
+		node=48;
 		break;
-		case 0x0B:
-		node=11;
+		case 0x29:
+		node=41;
 		break;
-		case 0x12:
-		node=18;
+		case 0x22:
+		node=34;
 		break;
-		case 0x19:
-		node=25;
+		case 0x1B:
+		node=27;
 		break;
-		case 0x20:
-		node=32;
+		case 0x14:
+		node=20;
 		break;
-		case 0x27:
-		node=39;
+		case 0x0D:
+		node=13;
 		break;
-		case 0x2E:
-		node=46;
+		case 0x06:
+		node=6;
 		break;
 		
 		case 0x64:
@@ -258,7 +258,7 @@ SIGNAL(SIG_UART_RECV)
 	          
  unsigned char k;
  k=UDR;         // Echo the received data plus 1
-if(k==0x33)//51
+if(k==0x35)//53
 {
 	mark=1;
 	buzzer_on();
@@ -266,7 +266,7 @@ if(k==0x33)//51
 	buzzer_off();
 	_delay_ms(300);
 }
-if (k==0x34)//52
+if (k==0x36)//54
 {
 	mark=0;
 	next++;
@@ -280,9 +280,9 @@ if (k==0x34)//52
 	{
 		if(k>0x00 && k<0x31)//0-49
 		{
-			red_nodes[r]=conversion(k);
+			blue_nodes[b]=conversion(k);
 			
-			r++;
+			b++;
 			buzzer_on();
 			_delay_ms(300);
 			buzzer_off();
@@ -291,8 +291,8 @@ if (k==0x34)//52
 		}
 		else if(k==0x64 || k==0x65)//100-101
 		{
-			red_side[rs]=conversion(k);
-			rs++;
+			blue_side[bs]=conversion(k);
+			bs++;
 			buzzer_on();
 			_delay_ms(300);
 			buzzer_off();

@@ -5,17 +5,18 @@
  *  Author: Avinash Dubey
  */
 
-////RED
+//////////////////BLUE FEEDER BOT
 #include <avr/io.h>
 #define F_CPU 7372800UL
 #include <util/delay.h>
 #include "buzzer.h"
+//#include "lcd.c"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 //#include "lcd.h"
-#include "adjescent.h"
+#include "adjescent.h"s
 #include "pos_encoder.h"
 #include "servo_motor.h"
 #include "sharp_header.h"
@@ -63,7 +64,8 @@ void ReachDestinationAvoidingNode(unsigned char Xd,unsigned char Yd)
 	/*back();
 	velocity(100,100);
 	
-	_delay_ms(1500);*/
+	_delay_ms(500);*/
+	
 	start=des;
 }
 
@@ -72,22 +74,16 @@ void ReachDestinationAvoidingNode(unsigned char Xd,unsigned char Yd)
 
 int main(void)
 {   DDRB=0x20; 
-	init_devices_zigbee();
 	init_devices_pos();
-	stage=1;
-	t=0;
-     ReachDestinationAvoidingNode(start,des);//22-6
+     ReachDestinationAvoidingNode(start,des);//6-46
 	 buzzer_on();
 	   _delay_ms(1000);
 	   buzzer_off();
 	stage=2;
 	//start=5;
-	des=48;
+	des=4;
 	array_init();
-		ReachDestinationAvoidingNode(start,des);//6-48
-		buzzer_on();
-		_delay_ms(1000);
-		buzzer_off();
+		ReachDestinationAvoidingNode(start,des);//46-4
 	//stage=4;
 	//des=2;
 	//ReachDestinationAvoidingNode(start,des);//4-2
@@ -95,85 +91,38 @@ int main(void)
  	stage=3;
 	//start=2;////////
 	/////////////stage==3/////start=4///
-	des=4;
-	ReachDestinationAvoidingNode(start,des);///48-4
-	buzzer_on();
-	_delay_ms(1000);
-	buzzer_off();
+	des=44;
+	ReachDestinationAvoidingNode(start,des);///2-44//4-44
 	
 	//stage=4;
 	//des=48;
-	_Bool red_des_count=0;
-	for (unsigned char i=0;i<=10;i++)
-	{
-		switch (red_nodes[i])
-		{
-			case 2:
-			des=2;
-			red_des_count=1;
-			break;
-			case 9:
-			des=9;
-			red_des_count=1;
-			break;
-			case 16:
-			des=16;
-			red_des_count=1;
-			break;
-			case 23:
-			des=23;
-			red_des_count=1;
-			break;
-			case 30:
-			des=30;
-			red_des_count=1;
-			break;
-			case 37:
-			des=37;
-			red_des_count=1;
-			break;
-			
-			
-		}
-	}
-	if (red_des_count==1)
-	{
-		ReachDestinationAvoidingNode(start,des);//4-X
-		buzzer_on();
-		_delay_ms(1000);
-		buzzer_off();
-		des=8;
-		ReachDestinationAvoidingNode(start,des);//X-8
-		buzzer_on();
-		_delay_ms(500);
-		buzzer_off();
-		_delay_ms(500);
-		buzzer_on();
-		_delay_ms(500);
-		buzzer_off();
-		_delay_ms(500);
-	}
-	else if (red_des_count==0)
-	{	des=8;
-		ReachDestinationAvoidingNode(start,des);//4-8
-		buzzer_on();
-		_delay_ms(500);
-		buzzer_off();
-		_delay_ms(500);
-		
-		buzzer_on();
-		_delay_ms(500);
-		buzzer_off();
-		_delay_ms(500);
-	}
+	des=13;
+	buzzer_on();
+	_delay_ms(1000);
+	buzzer_on();
+	ReachDestinationAvoidingNode(start,des);//44-48//44-13
+	buzzer_on();
+	_delay_ms(1000);
+	buzzer_off();
+	//des=13;
+	//stage=3;
 	
+// 	ReachDestinationAvoidingNode(start,des);//48-13
+// 	buzzer_on();
+// 	_delay_ms(1000);
+// 	buzzer_on();
+// 	stage=4;
+	des=14;
+	ReachDestinationAvoidingNode(start,des);//13-14
 	
-	
-	
-	
-	forward();
-	velocity(0,0);
-	while(1);
+
+	buzzer_on();
+	_delay_ms(2000);
+	buzzer_on();
+   forward();
+   velocity(0,0);
+   _delay_ms(1500);
+   while(1);
 	
 	
 	
