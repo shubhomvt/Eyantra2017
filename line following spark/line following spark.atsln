@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "line following spark", "line following spark\line following spark.cproj", "{F3843F40-3890-49A2-9252-A85A5A390AC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3843F40-3890-49A2-9252-A85A5A390AC8}.Debug|AVR.ActiveCfg = Debug|AVR
+		{F3843F40-3890-49A2-9252-A85A5A390AC8}.Debug|AVR.Build.0 = Debug|AVR
+		{F3843F40-3890-49A2-9252-A85A5A390AC8}.Release|AVR.ActiveCfg = Release|AVR
+		{F3843F40-3890-49A2-9252-A85A5A390AC8}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
